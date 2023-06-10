@@ -93,5 +93,47 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** no instance found **")
 
+    def do_all(self, args):
+        """
+        Print the string representation of all instances based on the class name
+        """
+        obj_dict = storage.all()
+        if not args:
+            print([str(obj_dict[key]) for key in obj_dict])
+        else:
+            args_list = args.split()
+            if args_list[0] not in ["BaseModel"]:
+                print("** class doesn't exist **")
+            else:
+                print([str(obj_dict[key]) for key in obj_dict if key.startswith(args_list[0])])
+
+    def do_update(self, args):
+        """
+        Update an instance based on the class name and id by adding or updating an attribute
+        """
+        if not args:
+            print("** class name missing **")
+        else:
+            args_list = args.split()
+            if args_list[0] not in ["BaseModel"]:
+                print("** class doesn't exist **")
+            elif len(args_list) < 2:
+                print("** instance id missing **")
+            else:
+                obj_dict = storage.all()
+                instance_key = "{}.{}".format(args_list[0], args_list[1])
+                if instance_key not in obj_dict:
+                    print("** no instance found **")
+                elif len(args_list) < 3:
+                    print("** attribute name missing **")
+                elif len(args_list) < 4:
+                    print("** value missing **")
+                else:
+                    instance = obj_dict[instance_key]
+                    attr_name = args_list[2]
+                    attr_value = args_list[3].strip('"')
+                    setattr(instance, attr_name, attr_value)
+                    instance.save()
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
