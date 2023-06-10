@@ -3,6 +3,7 @@
 
 
 import cmd
+import json
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -50,6 +51,26 @@ class HBNBCommand(cmd.Cmd):
                 print(new_instance.id)
             except NameError:
                 print("** class doesn't exist **")
+
+    def do_show(self, args):
+        """
+        Print the string representation of an instance based on the class name and id
+        """
+        if not args:
+            print("** class name missing **")
+        else:
+            args_list = args.split()
+            if args_list[0] not in ["BaseModel"]:
+                print("** class doesn't exist **")
+            elif len(args_list) < 2:
+                print("** instance id missing **")
+            else:
+                obj_dict = storage.all()
+                instance_key = "{}.{}".format(args_list[0], args_list[1])
+                if instance_key in obj_dict:
+                    print(obj_dict[instance_key])
+                else:
+                    print("** no instance found **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
