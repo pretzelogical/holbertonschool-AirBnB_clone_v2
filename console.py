@@ -37,5 +37,19 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Exit the program when End-of-File (EOF) character is received")
 
+    def do_create(self, args):
+        """
+        Create a new instance of BaseModel, save it to the JSON file, and print the id
+        """
+        if not args:
+            print("** class name missing **")
+        else:
+            try:
+                new_instance = eval(args)()
+                new_instance.save()
+                print(new_instance.id)
+            except NameError:
+                print("** class doesn't exist **")
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
