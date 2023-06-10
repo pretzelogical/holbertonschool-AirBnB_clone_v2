@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+""" Console to manage the hbnb data"""
+
+
 import cmd
 
 class HBNBCommand(cmd.Cmd):
