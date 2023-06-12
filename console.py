@@ -4,6 +4,8 @@
 
 import cmd
 import json
+from models.base_model import BaseModel
+from models import storage
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
