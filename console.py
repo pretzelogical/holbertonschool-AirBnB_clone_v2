@@ -66,17 +66,25 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def params_to_obj(obj, params):
         """ Parses params and adds them to obj """
+        import re
         for param in params:
             param = param.split('=')
-            if param[1].startswith('"'):  # handle string values
-                string_out = param[1]
-                for idx, char in enumerate(string_out):
-                    if idx == 0:
-                        string_out = (string_out[:idx]
-                                      + string_out[idx + 1:])
-                print(double_quotes)
-                print(string_out)
-            print(param)
+            key = param[0]
+            value = param[1] #  TODO: when given input such as: create User joe="bogan \" " it indexerrors
+            if value.startswith('"'):  # handle string values
+                value = re.sub(r'(?<!\\)"', '', value)
+                setattr(obj, key, value)
+            elif value.isnumeric():
+                try:
+                    value = int(value)
+                    setattr(obj, key, value)
+                except ValueError: pass
+            elif value.replace('.', '').isnumeric():
+                try:
+                    value = float(value)
+                    setattr(obj, key, value)
+                except ValueError: pass
+        print(obj)
 
     def do_show(self, line):
         """ Print string representation: name and id """
