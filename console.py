@@ -41,9 +41,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create instance specified by the user """
-        if not args:
+        args = args.split()
+        if not args[0]:
             print("** class name missing **")
-        elif args not in HBNBCommand.__classes:
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
             cls_d = {'BaseModel': BaseModel,
@@ -54,11 +55,28 @@ class HBNBCommand(cmd.Cmd):
                      'Amenity': Amenity,
                      'Review': Review
                      }
-
-            new_obj = cls_d[args]()
+            new_obj = cls_d[args[0]]()
+            if args[1]:  # If params are present
+                params = args[1:]
+                self.params_to_obj(new_obj, params)
             new_obj.save()
             print("{}".format(new_obj.id))
             storage.save()
+
+    @staticmethod
+    def params_to_obj(obj, params):
+        """ Parses params and adds them to obj """
+        for param in params:
+            param = param.split('=')
+            if param[1].startswith('"'):  # handle string values
+                string_out = param[1]
+                for idx, char in enumerate(string_out):
+                    if idx == 0:
+                        string_out = (string_out[:idx]
+                                      + string_out[idx + 1:])
+                print(double_quotes)
+                print(string_out)
+            print(param)
 
     def do_show(self, line):
         """ Print string representation: name and id """
