@@ -3,6 +3,7 @@
 
 import cmd
 import json
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -41,7 +42,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create instance specified by the user """
-        args = args.split()
+        print(f"args pre: {args}")
+        args = re.findall(r'(?:"[^"]*"|[^\s"])+', args)
+        print(f"args post: {args}")
         if not args[0]:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.__classes:
@@ -66,13 +69,19 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def params_to_obj(obj, params):
         """ Parses params and adds them to obj """
-        import re
+        print(params)
         for param in params:
             param = param.split('=')
+            if len(param) != 2:
+                print("** param error **")
+                continue
             key = param[0]
-            value = param[1] #  TODO: when given input such as: create User joe="bogan \" " it indexerrors
-            if value.startswith('"'):  # handle string values
-                value = re.sub(r'(?<!\\)"', '', value)
+            value = param[1]
+            if value.startswith('"'):  #  handle string values
+                value = value[1:]
+                if value.endswith('"'):
+                    value = value[:-1]
+                value = re.sub(r'\\"', '"', value)  #  python parses \" as \\"
                 setattr(obj, key, value)
             elif value.isnumeric():
                 try:
