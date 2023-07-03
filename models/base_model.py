@@ -1,13 +1,19 @@
 #!/usr/bin/python3
 """ Air BnB Clone Basemodel """
 
-import models
 import uuid
+import models
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, Integer, DateTime
 
+Base = declarative_base()
 
 class BaseModel:
     """ Type class of BaseModel """
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
+    created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
+    updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
     def __init__(self, *args, **kwargs):
         """ Type method initialize """
