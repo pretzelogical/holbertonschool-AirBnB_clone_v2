@@ -17,9 +17,15 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """ Return the dictionary __objects """
-        return FileStorage.__objects
+        if not cls:
+            return FileStorage.__objects
+        out_dict = {}
+        for key, val in FileStorage.__objects.copy().items():
+            if type(val) == type(cls):
+                out_dict[key] = val  # TODO: fix this not giving any output
+        return out_dict
 
     def new(self, obj):
         """ Set in __object the obj with the key <obj class name>.id """
@@ -32,8 +38,8 @@ class FileStorage:
         for key, value in FileStorage.__objects.items():
             dictionary[key] = value.to_dict()
 
-        with open(FileStorage.__file_path, 'w') as fd:
-            json.dump(dictionary, fd)
+        # with open(FileStorage.__file_path, 'w') as fd:
+        #     json.dump(dictionary, fd)
 
     def reload(self):
         """ Deserialize __objects from JSON file """
@@ -53,3 +59,12 @@ class FileStorage:
                 for key, value in obj_dict.items():
                     self.new(dct[value['__class__']](**value))
             return
+
+    def delete(self, obj=None):
+        """ Deletes obj from __objects """
+        if not obj:
+            return
+        for key, val in FileStorage.__objects.copy().items():
+            if val == obj:
+                del FileStorage.__objects[key]
+
