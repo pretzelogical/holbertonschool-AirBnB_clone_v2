@@ -23,8 +23,11 @@ class FileStorage:
             return FileStorage.__objects
         out_dict = {}
         for key, val in FileStorage.__objects.copy().items():
-            if type(val) == type(cls):  #  This doesnt work because the type is set to a weird sqalchemy thing
-                out_dict[key] = val  # TODO: fix this not giving any output
+            # This doesnt work because the type is
+            # set to a weird sqalchemy thing
+            if type(val) == type(cls):
+                out_dict[key] = val
+                # TODO: fix this not giving any output
         return out_dict
 
     def new(self, obj):
@@ -38,8 +41,12 @@ class FileStorage:
         for key, value in FileStorage.__objects.items():
             dictionary[key] = value.to_dict()
 
-        # with open(FileStorage.__file_path, 'w') as fd: <- DISABLED: due to _sa_instance_state (sqlalchemy related)
-        #     json.dump(dictionary, fd)                  <- not being serializable and present no matter what method is being used
+        # DISABLED: due to _sa_instance_state (sqlalchemy related)
+        # not being serializable and present no matter
+        # what method is being used
+        # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        # with open(FileStorage.__file_path, 'w') as fd:
+        #     json.dump(dictionary, fd)
 
     def reload(self):
         """ Deserialize __objects from JSON file """
@@ -67,4 +74,3 @@ class FileStorage:
         for key, val in FileStorage.__objects.copy().items():
             if val == obj:
                 del FileStorage.__objects[key]
-

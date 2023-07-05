@@ -18,14 +18,14 @@ class HBNBCommand(cmd.Cmd):
     """ Class HBNBCommand CLI, entry command interpreter """
     prompt = '(hbnb) '
     __classes = {
-            'BaseModel',
-            'User',
-            'Place',
-            'State',
-            'City',
-            'Amenity',
-            'Review'
-            }
+        'BaseModel',
+        'User',
+        'Place',
+        'State',
+        'City',
+        'Amenity',
+        'Review'
+    }
 
     def emptyline(self):
         """ Method emptyline """
@@ -43,13 +43,13 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         cls_d = {'BaseModel': BaseModel,
-         'User': User,
-         'Place': Place,
-         'State': State,
-         'City': City,
-         'Amenity': Amenity,
-         'Review': Review
-         }
+                 'User': User,
+                 'Place': Place,
+                 'State': State,
+                 'City': City,
+                 'Amenity': Amenity,
+                 'Review': Review
+                 }
         new = args.split(" ")
         print(f"new: {new}")
         if not new:

@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
+
 class Review(BaseModel, Base):
     """ Class Review that inherits from BaseModel """
     __tablename__ = "reviews"
