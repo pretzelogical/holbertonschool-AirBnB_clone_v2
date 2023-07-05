@@ -51,7 +51,6 @@ class HBNBCommand(cmd.Cmd):
                  'Review': Review
                  }
         new = args.split(" ")
-        print(f"new: {new}")
         if not new:
             print("** class name missing **")
             return

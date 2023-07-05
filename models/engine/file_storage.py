@@ -3,6 +3,7 @@
 
 import json
 import os.path
+from os import getenv
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -41,12 +42,17 @@ class FileStorage:
         for key, value in FileStorage.__objects.items():
             dictionary[key] = value.to_dict()
 
+        if not getenv("HBNB_TYPE_STORAGE") == "db":
+            for key, value in dictionary.items():
+                if value['_sa_instance_state']:
+                    value.pop('_sa_instance_state')
+        with open(FileStorage.__file_path, 'w') as fd:
+            json.dump(dictionary, fd)
+
         # DISABLED: due to _sa_instance_state (sqlalchemy related)
         # not being serializable and present no matter
         # what method is being used
         # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-        # with open(FileStorage.__file_path, 'w') as fd:
-        #     json.dump(dictionary, fd)
 
     def reload(self):
         """ Deserialize __objects from JSON file """
