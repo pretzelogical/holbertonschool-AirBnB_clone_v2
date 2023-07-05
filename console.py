@@ -4,6 +4,7 @@
 import cmd
 import json
 import re
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -43,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create instance specified by the user """
         print(f"args pre: {args}")
-        args = re.findall(r'(?:"[^"]*"|[^\s"])+', args)
+        args = re.findall(r'(?:"[^"]*"|[^\s"])+', args)  #  TODO: this turns \" to \\" for some godforsaken reason
         print(f"args post: {args}")
         if not args[0]:
             print("** class name missing **")
@@ -81,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
                 value = value[1:]
                 if value.endswith('"'):
                     value = value[:-1]
-                value = re.sub(r'\\"', '"', value)  #  python parses \" as \\"
+                value = re.sub(r'\\"', '"', value)
                 setattr(obj, key, value)
             elif value.isnumeric():
                 try:
