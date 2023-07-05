@@ -44,15 +44,12 @@ class FileStorage:
 
         if not getenv("HBNB_TYPE_STORAGE") == "db":
             for key, value in dictionary.items():
-                if value['_sa_instance_state']:
+                # _sa_instance_state is not json serializable so if it's
+                # there remove it
+                if '_sa_instance_state' in value.keys():
                     value.pop('_sa_instance_state')
         with open(FileStorage.__file_path, 'w') as fd:
             json.dump(dictionary, fd)
-
-        # DISABLED: due to _sa_instance_state (sqlalchemy related)
-        # not being serializable and present no matter
-        # what method is being used
-        # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
     def reload(self):
         """ Deserialize __objects from JSON file """

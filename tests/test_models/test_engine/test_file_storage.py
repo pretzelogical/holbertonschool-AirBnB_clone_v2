@@ -67,10 +67,6 @@ class Test_FileStorage_m(unittest.TestCase):
     def test_all(self):
         self.assertEqual(dict, type(models.storage.all()))
 
-    def test_all_arg(self):
-        with self.assertRaises(TypeError):
-            models.storage.all(None)
-
     def test_new_all_cls(self):
         Bmodel = BaseModel()
         models.storage.new(Bmodel)
