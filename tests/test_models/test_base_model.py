@@ -24,6 +24,8 @@ class Test_BaseModel(unittest.TestCase):
     def test_noarg(self):
         self.assertEqual(BaseModel, type(BaseModel()))
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") != "db",
+                     "not testing db storage")
     def test_None(self):
         Bmodel = BaseModel(None)
         self.assertNotIn(None, Bmodel.__dict__.values())
