@@ -9,6 +9,7 @@ from sqlalchemy import Column, String, Integer, DateTime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """ Type class of BaseModel """
     id = Column(String(60), primary_key=True, nullable=False, unique=True)
