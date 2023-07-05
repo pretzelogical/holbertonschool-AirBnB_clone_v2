@@ -4,7 +4,6 @@
 import cmd
 import json
 import re
-import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -42,30 +41,43 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, args):
-        """ Create instance specified by the user """
-        print(f"args pre: {args}")
-        args = re.findall(r'(?:"[^"]*"|[^\s"])+', args)  #  TODO: this turns \" to \\" for some godforsaken reason
-        print(f"args post: {args}")
-        if not args[0]:
+        """ Create an object of any class"""
+        cls_d = {'BaseModel': BaseModel,
+         'User': User,
+         'Place': Place,
+         'State': State,
+         'City': City,
+         'Amenity': Amenity,
+         'Review': Review
+         }
+        new = args.split(" ")
+        print(f"new: {new}")
+        if not new:
             print("** class name missing **")
-        elif args[0] not in HBNBCommand.__classes:
+            return
+        elif new[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
-        else:
-            cls_d = {'BaseModel': BaseModel,
-                     'User': User,
-                     'Place': Place,
-                     'State': State,
-                     'City': City,
-                     'Amenity': Amenity,
-                     'Review': Review
-                     }
-            new_obj = cls_d[args[0]]()
-            if args[1]:  # If params are present
-                params = args[1:]
-                self.params_to_obj(new_obj, params)
-            new_obj.save()
-            print("{}".format(new_obj.id))
-            storage.save()
+            return
+        new_instance = cls_d[new[0]]()
+
+        for i in range(1, len(new)):
+            first = new[i].split("=")
+            try:
+                if first[1][0] == "\"":
+                    first[1] = first[1].replace("\"", "")
+                    first[1] = first[1].replace("_", " ")
+
+                elif "." in first[1]:
+                    first[1] = float(first[1])
+
+                else:
+                    first[1] = int(first[1])
+                setattr(new_instance, first[0], first[1])
+            except Exception:
+                continue
+
+        new_instance.save()
+        print(new_instance.id)
 
     @staticmethod
     def params_to_obj(obj, params):
