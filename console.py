@@ -60,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
                      'Review': Review
                      }
             new_obj = cls_d[args[0]]()
-            if args[1]:  # If params are present
+            if len(args) > 1:  # If params are present
                 params = args[1:]
                 self.params_to_obj(new_obj, params)
             new_obj.save()
