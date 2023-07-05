@@ -79,35 +79,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
-    @staticmethod
-    def params_to_obj(obj, params):
-        """ Parses params and adds them to obj """
-        print(params)
-        for param in params:
-            param = param.split('=')
-            if len(param) != 2:
-                print("** param error **")
-                continue
-            key = param[0]
-            value = param[1]
-            if value.startswith('"'):  #  handle string values
-                value = value[1:]
-                if value.endswith('"'):
-                    value = value[:-1]
-                value = re.sub(r'\\"', '"', value)
-                setattr(obj, key, value)
-            elif value.isnumeric():
-                try:
-                    value = int(value)
-                    setattr(obj, key, value)
-                except ValueError: pass
-            elif value.replace('.', '').isnumeric():
-                try:
-                    value = float(value)
-                    setattr(obj, key, value)
-                except ValueError: pass
-        print(obj)
-
     def do_show(self, line):
         """ Print string representation: name and id """
         arg = line.split()
