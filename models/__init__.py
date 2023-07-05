@@ -1,7 +1,14 @@
 #!/usr/bin/python3
-from models.engine.file_storage import FileStorage
-""" Import FileStorage to handle data """
+from os import getenv
+""" Import FileStorage to handle data
+    Import DBStorage to handle database
+"""
 
-
-storage = FileStorage()
-storage.reload()
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    from models.engine.db_storage import DBStorage
+    storage = DBStorage()
+    storage.reload()
+else:
+    from models.engine.file_storage import FileStorage
+    storage = FileStorage()
+    storage.reload()

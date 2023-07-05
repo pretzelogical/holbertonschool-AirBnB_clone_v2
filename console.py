@@ -3,6 +3,8 @@
 
 import cmd
 import json
+import re
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -41,9 +43,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create instance specified by the user """
-        if not args:
+        print(f"args pre: {args}")
+        args = re.findall(r'(?:"[^"]*"|[^\s"])+', args)  #  TODO: this turns \" to \\" for some godforsaken reason
+        print(f"args post: {args}")
+        if not args[0]:
             print("** class name missing **")
-        elif args not in HBNBCommand.__classes:
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
             cls_d = {'BaseModel': BaseModel,
@@ -54,11 +59,42 @@ class HBNBCommand(cmd.Cmd):
                      'Amenity': Amenity,
                      'Review': Review
                      }
-
-            new_obj = cls_d[args]()
+            new_obj = cls_d[args[0]]()
+            if args[1]:  # If params are present
+                params = args[1:]
+                self.params_to_obj(new_obj, params)
             new_obj.save()
             print("{}".format(new_obj.id))
             storage.save()
+
+    @staticmethod
+    def params_to_obj(obj, params):
+        """ Parses params and adds them to obj """
+        print(params)
+        for param in params:
+            param = param.split('=')
+            if len(param) != 2:
+                print("** param error **")
+                continue
+            key = param[0]
+            value = param[1]
+            if value.startswith('"'):  #  handle string values
+                value = value[1:]
+                if value.endswith('"'):
+                    value = value[:-1]
+                value = re.sub(r'\\"', '"', value)
+                setattr(obj, key, value)
+            elif value.isnumeric():
+                try:
+                    value = int(value)
+                    setattr(obj, key, value)
+                except ValueError: pass
+            elif value.replace('.', '').isnumeric():
+                try:
+                    value = float(value)
+                    setattr(obj, key, value)
+                except ValueError: pass
+        print(obj)
 
     def do_show(self, line):
         """ Print string representation: name and id """
