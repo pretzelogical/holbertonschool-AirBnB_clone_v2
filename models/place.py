@@ -10,7 +10,6 @@ metadata = Base.metadata
 
 class Place(BaseModel, Base):
     """ Class Place that inherits from BaseModel """
-    
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
