@@ -23,8 +23,10 @@ class FileStorage:
             return FileStorage.__objects
         out_dict = {}
         for key, val in FileStorage.__objects.copy().items():
-            if type(val) == type(cls):  #  This doesnt work because the type is set to a weird sqalchemy thing
-                out_dict[key] = val  # TODO: fix this not giving any output
+            if type(val) == type(cls):  
+                #  This doesnt work because the type is set to a weird sqalchemy thing
+                out_dict[key] = val  
+                #  fix this not giving any output
         return out_dict
 
     def new(self, obj):
