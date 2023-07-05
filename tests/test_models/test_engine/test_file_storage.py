@@ -142,9 +142,9 @@ class Test_FileStorage_m(unittest.TestCase):
     def test_reload(self):
         if os.path.exists("file.json"):
             os.remove("file.json")
-        storage.save()
-        storage.reload()
-        all_objs = storage.all()
+        models.storage.save()
+        models.storage.reload()
+        all_objs = models.storage.all()
         for obj_id in all_objs.keys():
             obj = all_objs[obj_id]
             self.assertTrue(isinstance(obj, BaseModel))
@@ -291,9 +291,9 @@ class Test_FileStorage_m(unittest.TestCase):
     def test_reload(self):
         if os.path.exists("file.json"):
             os.remove("file.json")
-        storage.save()
-        storage.reload()
-        all_objs = storage.all()
+        models.storage.save()
+        models.storage.reload()
+        all_objs = models.storage.all()
         for obj_id in all_objs.keys():
             obj = all_objs[obj_id]
             self.assertTrue(isinstance(obj, BaseModel))
