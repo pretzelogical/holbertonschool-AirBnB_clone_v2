@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ A simple flask web application that runs at 0.0.0.0:5000 """
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -37,6 +37,14 @@ def python_route(text='is cool'):
 def is_an_integer(n):
     """ Uses flask variable rules to only display n if n is an int """
     return f"{n} is a number"
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n):
+    """ Uses flask variable rules to return a jinja2 formatted html page
+    Only returns if n is an int
+    """
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
