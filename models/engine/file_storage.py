@@ -77,3 +77,7 @@ class FileStorage:
         for key, val in FileStorage.__objects.copy().items():
             if val == obj:
                 del FileStorage.__objects[key]
+
+    def close(self):
+        """ Calls self.reload() """
+        self.reload()
