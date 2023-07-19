@@ -14,7 +14,7 @@ class Review(BaseModel, Base):
         ForeignKey('places.id'),
         nullable=False)
     user_id = Column(
-        String(60),
+        String(60, collation="latin1_swedish_ci"),
         ForeignKey('users.id'),
         nullable=False)
     text = Column(
