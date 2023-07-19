@@ -10,11 +10,11 @@ class Review(BaseModel, Base):
     __tablename__ = 'reviews'
 
     place_id = Column(
-        String(60, collation="latin1_swedish_ci"),
+        String(60),
         ForeignKey('places.id'),
         nullable=False)
     user_id = Column(
-        String(60, collation="latin1_swedish_ci"),
+        String(60),
         ForeignKey('users.id'),
         nullable=False)
     text = Column(

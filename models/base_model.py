@@ -24,9 +24,9 @@ class BaseModel:
                 default: datetime now
     """
     id = Column(
-        String(60, collation="latin1_swedish_ci"),
+        String(60),
         nullable=False,
-        primary_key=True,
+        primary_key=True
     )
     created_at = Column(
         DateTime,
