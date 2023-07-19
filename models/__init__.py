@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-from os import getenv
-""" Import FileStorage to handle data
-    Import DBStorage to handle database
-"""
+""" This module instantiates an object of class FileStorage """
+import os
 
-if getenv("HBNB_TYPE_STORAGE") == "db":
+
+
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
